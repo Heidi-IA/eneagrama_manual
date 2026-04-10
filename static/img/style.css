@@ -1,0 +1,40 @@
+body {
+    background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+}
+.main-header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.logo {
+    width: 180px;      /* ajustá tamaño si querés */
+    max-width: 80%;
+}
+
+.question-card {
+    transition: all 0.2s ease;
+    background-color: #ffffff;
+}
+
+.question-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.btn-primary {
+    background-color: #5a67d8;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #434190;
+}
+
+.btn-success {
+    background-color: #38a169;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #2f855a;
+}
