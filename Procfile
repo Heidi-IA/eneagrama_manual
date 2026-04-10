@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn app_eneagrama_manual:app
