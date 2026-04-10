@@ -53,7 +53,7 @@ def index():
                 nombre=nombre,
                 email=email,
                 titulo="Informe profundo de autoconocimiento",
-                mensaje_final="Informe generado manualmente",
+                mensaje_final="Para una consulta personalizada o exploración de otras herramientas de autoconocimiento contactar a AZ Consultora @az_coaching.terapeutico o WhatsApp +54-2975203761",
             )
 
             pdf_bytes = build_integral_pdf(payload)
