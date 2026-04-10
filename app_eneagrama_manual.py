@@ -3,9 +3,9 @@ import io
 
 # 🔥 IMPORTAMOS LO QUE YA TENÉS
 # (esto reutiliza tu lógica existente)
-from app import build_pdf_from_payload as build_integral_pdf
-from app import build_bonus_estructura_pensamiento
-from app import ENEATIPO_TEXTOS as ENEATIPO_INTEGRAL
+from app_integral import build_pdf_from_payload as build_integral_pdf
+from app_integral import build_bonus_estructura_pensamiento
+from app_integral import ENEATIPO_TEXTOS as ENEATIPO_INTEGRAL
 
 from app_esencial import build_pdf as build_esencial_pdf
 from app_esencial import ENEATIPO_TEXTOS as ENEATIPO_ESENCIAL
