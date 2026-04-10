@@ -6,17 +6,3 @@ numpy
 sqlalchemy
 mercadopago
 psycopg2-binary
-Flask==3.1.2
-gunicorn==25.0.3
-
-SQLAlchemy
-psycopg2-binary
-
-reportlab
-matplotlib
-numpy
-
-pandas==2.3.3
-openpyxl==3.1.5
-
-mercadopago
