@@ -6,8 +6,33 @@ from app_integral import build_payload_from_scores
 
 from app_esencial import build_pdf as build_esencial_pdf
 from app_esencial import ENEATIPO_TEXTOS as ENEATIPO_ESENCIAL
+from app_esencial import ALAS, DESCRIPCION_ALAS
 
 app = Flask(__name__)
+
+
+def calcular_ala_esencial(porcentaje_scores: dict, top_types: list) -> list:
+    """Calcula el ala dominante para el modelo esencial."""
+    if not top_types:
+        return []
+    principal = top_types[0]
+    izq, der = ALAS[principal]
+    pct_izq = porcentaje_scores.get(izq, 0)
+    pct_der = porcentaje_scores.get(der, 0)
+    if pct_izq > pct_der:
+        clave = f"{principal}w{izq}"
+    elif pct_der > pct_izq:
+        clave = f"{principal}w{der}"
+    else:
+        # empate: devolver ambas
+        ala_textos = []
+        for c in [f"{principal}w{izq}", f"{principal}w{der}"]:
+            t = DESCRIPCION_ALAS.get(c)
+            if t:
+                ala_textos.append(t)
+        return ala_textos
+    t = DESCRIPCION_ALAS.get(clave)
+    return [t] if t else []
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -19,7 +44,8 @@ def index():
         email = request.form.get("email")
         sexo = request.form.get("sexo", "")
         fecha_nacimiento = request.form.get("fecha_nacimiento", "")
-        hora_nacimiento = request.form.get("hora_nacimiento", "")
+        hora_desconocida = request.form.get("hora_desconocida")
+        hora_nacimiento = "Desconocida" if hora_desconocida else request.form.get("hora_nacimiento", "")
         fecha_test = request.form.get("fecha_test", "manual")
         total_marked = int(request.form.get("total_marked", 100))
 
@@ -33,6 +59,9 @@ def index():
         # -------------------------
         if modelo == "esencial":
 
+            top_types = [max(porcentaje_scores, key=porcentaje_scores.get)]
+            ala_textos = calcular_ala_esencial(porcentaje_scores, top_types)
+
             payload = {
                 "analista": "AZ Consultora",
                 "propietario": {
@@ -43,9 +72,9 @@ def index():
                     "hora_nacimiento": hora_nacimiento,
                 },
                 "fecha_test": fecha_test,
-                "total_marked": total_marked,
-                "top_types": [max(porcentaje_scores, key=porcentaje_scores.get)],
-                "ala_textos": [],
+                "total_marked": total_marked,          # raíz del payload — así lo lee build_pdf
+                "top_types": top_types,
+                "ala_textos": ala_textos,              # ala calculada
                 "resultados": {str(k): v for k, v in porcentaje_scores.items()},
             }
 
@@ -61,7 +90,7 @@ def index():
                 nombre=nombre,
                 email=email,
                 titulo="Informe profundo de autoconocimiento",
-                mensaje_final="Para una consulta personalizada o exploración de otras herramientas de autoconocimiento contactar a AZ Consultora @az_coaching.terapeutico o WhatsApp +54-2975203761",
+                mensaje_final="Informe generado manualmente",
             )
 
             # Completar datos personales y total_marked
